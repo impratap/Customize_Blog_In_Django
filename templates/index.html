@@ -1,0 +1,58 @@
+{% extends "base.html" %} 
+{% load static %}
+{% block content %} 
+
+<head>
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+</head>
+
+<header class="masthead">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-md-10 mx-auto text-center">
+                <div class="site-heading">
+                    <h3 class="site-heading my-4 mt-3 text-black">Welcome to Django Blog</h3>
+                    <p class="text-black">This is a Blog... &nbsp</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 mt-3 left">
+            {% for post in post_list %} 
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h2 class="card-title">{{ post.title }}</h2>
+                    <p class="card-text text-muted h6">{{ post.author }} | {{post.created_on}}</p>
+                    <p class="card-text">{{post.content|slice:":200" }}</p>
+                    <a href="{% url 'post_detail' post.slug %}" class=" btn btn-outline-primary">Read More &rarr;</a>
+
+                </div>
+            </div>
+            {% endfor %} 
+        </div>
+        
+        {% block sidebar %} {% include 'sidebar.html' %} {% endblock sidebar %}
+
+        
+    </div>
+</div>
+{% if is_paginated %}
+  <nav aria-label="Page navigation conatiner"></nav>
+  <ul class="pagination justify-content-center">
+    {% if page_obj.has_previous %}
+    <li><a href="?page={{ page_obj.previous_page_number }}" class="page-link">&laquo; PREV </a></li>
+    {% endif %}
+    {% if page_obj.has_next %}
+    <li><a href="?page={{ page_obj.next_page_number }}" class="page-link"> NEXT &raquo;</a></li>
+
+    {% endif %}
+  </ul>
+  </nav>
+</div>
+{% endif %}
+
+{% endblock content %} 
